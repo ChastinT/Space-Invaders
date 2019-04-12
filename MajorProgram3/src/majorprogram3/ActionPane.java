@@ -5,6 +5,7 @@
  */
 package majorprogram3;
 
+import javafx.animation.AnimationTimer;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -15,14 +16,21 @@ import javafx.scene.paint.Color;
  */
 public class ActionPane extends Pane
 {
-    CmdCenter ship = new CmdCenter(this);
+    
+    CmdCenter center = new CmdCenter(this);
+    Projectile projectile = new Projectile(center);
     public ActionPane()
     {
-        this.setLayoutX(500);
-        this.setLayoutY(800);
+        this.setLayoutX(400);
+        this.setLayoutY(200);
         this.setStyle("-fx-background-color: #000000");
        
        
     }
-            
+    
+ 
+    
+ 
+    
+                     
 }

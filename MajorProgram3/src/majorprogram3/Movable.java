@@ -14,7 +14,7 @@ public interface Movable
     
     int east = 0;
     int west = 180;
-    int norht = 90;
+    int north = 90;
     int south = 270;
     
     

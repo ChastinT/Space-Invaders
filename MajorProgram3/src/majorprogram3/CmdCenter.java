@@ -16,11 +16,13 @@ import javafx.scene.image.ImageView;
  */
 public class CmdCenter extends GameObject 
 {
-  private Projectile projectile; 
-    
+  private Projectile projectile = new Projectile(this);
+
     public CmdCenter(ActionPane actionPane)
     {
+
       actionPane.getChildren().add(this);
+      //actionPane.getChildren().add(projectile);
         //Read in the entire sprite sheet from disk.
         
         
@@ -38,7 +40,7 @@ public class CmdCenter extends GameObject
     //Specify which portion of the sprite sheet you want displayed. by giving the (x,y)  
     //location of the top-left corner and the width and the height.
     Rectangle2D viewportRect = new Rectangle2D(220, 150, 30, 50);
-
+     //Destroyed fort 2: Rectangle2D viewportRect = new Rectangle2D(300, 150, 30, 50);
     //As a matter of preference, I scaled the image to make it appear larger.
     this.setScaleX(1.5);
     this.setScaleY(1.5);
@@ -55,6 +57,11 @@ public class CmdCenter extends GameObject
     this.setX(getParentWidth() +280);
     this.setY(getParentHeight() + 400);
     
+    
+    this.speed = 5;
+    this.parentHeight = 10;
+    this.parentWidth = 10;
+    
  
     
     }
@@ -65,5 +72,24 @@ public class CmdCenter extends GameObject
         double newY = this.getY() + getSpeed() * Math.sin(Math.toRadians(getDirection())) ;
 this.setX( newX );
 this.setY( newY );
+    }
+    
+    public Projectile getProjectile()
+    {
+        return this.projectile;
+    }
+    
+    public void fireProjectile()
+    {
+        if (!(this.getProjectile().isVisible()))
+        { 
+            this.getProjectile().setVisible(true);
+       this.getProjectile().setX(this.getX());
+       this.getProjectile().setY(this.getY()+ 10);
+      
+        }
+   
+       
+       
     }
 }

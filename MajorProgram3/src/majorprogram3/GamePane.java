@@ -10,6 +10,7 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
@@ -25,20 +26,22 @@ import javafx.stage.Stage;
 public class GamePane extends Application 
 {
     ActionPane actionPane = new ActionPane();
-
+ AnimationTimer timer;    
+ long lastShot = 0;
+ int shotInterval = 500; 
+ long previous = 0;
     public void start(Stage stage)
     {
     BorderPane borderPane = new BorderPane();
-    //ActionPane actionPane = new ActionPane();
     borderPane.setCenter(actionPane);
-    KeyListener holder;
-    AnimationTimer timer; 
+    KeyListener holder = null;
+    
+   
     
     
     
     
     Scene scene = new Scene(borderPane,550,600);
-    
     scene.setOnKeyPressed(new EventHandler <KeyEvent>()
             {
         @Override
@@ -47,25 +50,28 @@ public class GamePane extends Application
             if (event.getCode() == KeyCode.LEFT)
             {
                
-                actionPane.ship.setDirection(180);
-                 AnimationTimer timer = new AnimationTimer() 
+                
+                  timer = new AnimationTimer() 
                  {
                      
                     @Override
                     public void handle(long now) 
                     {
                         //actionPane.ship.move();
-                        if (actionPane.ship.getX()>=actionPane.getLayoutX())
+                        if (actionPane.center.getX()>actionPane.getLayoutX())
                         {
-                        actionPane.ship.setX(actionPane.ship.getX()-5);
+                            actionPane.center.setDirection(180);
+                        actionPane.center.move();
+                         
                         }
-                       
-                       
-                        
-                        
+                         if (actionPane.center.getX()<= 0)
+                      {
+                          
+                        actionPane.center.setX(5);
+                        timer.start();
+                      }
 
-                    }
-                   
+                    }   
         };
         timer.start();
         
@@ -73,30 +79,94 @@ public class GamePane extends Application
           
            if (event.getCode() == KeyCode.RIGHT)
             {
-//                actionPane.ship.setDirection(0);
-                 AnimationTimer timer = new AnimationTimer() 
+               
+               timer = new AnimationTimer() 
                  {
                      
                     @Override
                     public void handle(long now) 
                     {
                         
-                      if (actionPane.ship.getX()<= actionPane.getWidth())
+                      if (actionPane.center.getX()< actionPane.getWidth()-50)
                       {
-                        actionPane.ship.setX(actionPane.ship.getX()+5);
+                          actionPane.center.setDirection(0);
+                     actionPane.center.move();
+                      
                       }
-                        
-
+                      if (actionPane.center.getX()>= actionPane.getWidth()-50)
+                      {
+                          
+                          actionPane.center.setX(actionPane.getWidth() - 55);
+                         
+                          
+                      }
+                            
                     }
                    
         };
         timer.start();
     }
-              
-            }
+           
+           if (event.getCode() == KeyCode.SPACE && actionPane.center.getProjectile().isVisible() ==  false)
+            {
+               actionPane.getChildren().add(actionPane.center.getProjectile());
+                  timer = new AnimationTimer() 
+                         
+                 {
+                     
+                    @Override
+                    public void handle(long now) 
+                    {
+                       if (previous == 0)
+                       {
+                           previous = now;
+                       }
+                        
+                        if (now - previous < 2000000000L )
+                        {
+                          
+                            
+                           actionPane.center.fireProjectile();  
+                           
+                           System.out.println(now+"\n"+previous);
+                        }
+                       
+                       if (actionPane.center.getProjectile().isVisible()  )
+                        {    
+                            {
+                            actionPane.center.getProjectile().move();
+                            previous = now;
+                            }
+                        }
+                           
+                             if (actionPane.center.getProjectile().getY()<actionPane.getLayoutY())
+                            {
+                                
+                                actionPane.center.getProjectile().setVisible(false); 
+                                actionPane.getChildren().remove(actionPane.center.getProjectile());
+                                
+                                timer.stop();
+                               
+                               
+                                
+                            }
+                           
+                        }
+                       
+   
+                    
+                   
+        };
+
+            
+            
+            } 
+            timer.start();
+        }
+            
         });
     
-    
+    //KeyReleased
     scene.setOnKeyReleased(new EventHandler <KeyEvent>()
             {
         @Override
@@ -105,16 +175,28 @@ public class GamePane extends Application
             if (event.getCode() == KeyCode.LEFT)
             {
               
-                actionPane.ship.setDirection(180);
-                 AnimationTimer timer = new AnimationTimer() 
+                actionPane.center.setDirection(180);
+                 timer = new AnimationTimer() 
                  {
                      
                     @Override
                     public void handle(long now) 
                     {
                         //actionPane.ship.move();
+                          if (actionPane.center.getX()>actionPane.getLayoutX())
+                        {
+                            
+                        actionPane.center.setX(actionPane.center.getX()+5);
+                         
+                        }
                         
-                        actionPane.ship.setX(actionPane.ship.getX()+5);
+                         if (actionPane.center.getX()<= 0)
+                      {
+                          
+                        actionPane.center.setX(5);
+                        timer.start();
+                      }
+                         
 
                     }
                    
@@ -125,22 +207,26 @@ public class GamePane extends Application
           
            if (event.getCode() == KeyCode.RIGHT)
             {
-                 AnimationTimer timer = new AnimationTimer() 
+                 timer = new AnimationTimer() 
                  {
                      
                     @Override
                     public void handle(long now) 
                     {
-                        actionPane.ship.setX(actionPane.ship.getX()-5);
-
+                        actionPane.center.setX(actionPane.center.getX()-5);
+                        
                     }
+                    
                    
         };
         timer.start();
     }
-              
-            }
-        });
+  
+        }
+            });
+        
+               
+       
     
     
     
