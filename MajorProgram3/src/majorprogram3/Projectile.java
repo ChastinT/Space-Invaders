@@ -34,7 +34,7 @@ public class Projectile extends GameObject
 
     //Specify which portion of the sprite sheet you want displayed. by giving the (x,y)  
     //location of the top-left corner and the width and the height.
-    Rectangle2D viewportRect = new Rectangle2D(138, 350, 15, 20);
+    Rectangle2D viewportRect = new Rectangle2D(140, 350, 10, 20);
 
     //As a matter of preference, I scaled the image to make it appear larger.
     this.setScaleX(1.5);
@@ -50,15 +50,14 @@ public class Projectile extends GameObject
 
     //Give an initial location to the CmdCenter
     this.setX(object.getParentWidth());
-    this.setY(object.getParentHeight()+ 50);
+    this.setY(object.getParentHeight());
     }
     
     public void move()
     {
       
             this.setY(this.getY() - 10);
-        
-        
+ 
     }
   
  

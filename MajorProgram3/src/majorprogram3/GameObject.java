@@ -74,11 +74,5 @@ public abstract class GameObject extends ImageView implements Movable
          return parentHeight;
      }
      
-     public void move()
-     {
-         double newX = this.getX() + getSpeed() * Math.cos(Math.toRadians(getDirection()));
-         double newY = this.getY() + getSpeed() * Math.sin(Math.toRadians(getDirection()));
-         this.setX( newX );
-         this.setY( newY );
-     }
+     
 }

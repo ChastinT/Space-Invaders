@@ -17,6 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 /**
@@ -26,22 +27,22 @@ import javafx.stage.Stage;
 public class GamePane extends Application 
 {
     ActionPane actionPane = new ActionPane();
- AnimationTimer timer;    
+ AnimationTimer timer;   
+ 
  long lastShot = 0;
  int shotInterval = 500; 
  long previous = 0;
     public void start(Stage stage)
     {
-    BorderPane borderPane = new BorderPane();
-    borderPane.setCenter(actionPane);
+    StackPane stackPane = new StackPane();
+    stackPane.getChildren().add(actionPane);
     KeyListener holder = null;
-    
-   
-    
+
     
     
     
-    Scene scene = new Scene(borderPane,550,600);
+    
+    Scene scene = new Scene(stackPane,550,600);
     scene.setOnKeyPressed(new EventHandler <KeyEvent>()
             {
         @Override
@@ -51,61 +52,15 @@ public class GamePane extends Application
             {
                
                 
-                  timer = new AnimationTimer() 
-                 {
-                     
-                    @Override
-                    public void handle(long now) 
-                    {
-                        //actionPane.ship.move();
-                        if (actionPane.center.getX()>actionPane.getLayoutX())
-                        {
-                            actionPane.center.setDirection(180);
+                 actionPane.center.setDirection(180);
                         actionPane.center.move();
-                         
-                        }
-                         if (actionPane.center.getX()<= 0)
-                      {
-                          
-                        actionPane.center.setX(5);
-                        timer.start();
-                      }
-
-                    }   
-        };
-        timer.start();
-        
-    }
-          
-           if (event.getCode() == KeyCode.RIGHT)
-            {
-               
-               timer = new AnimationTimer() 
-                 {
-                     
-                    @Override
-                    public void handle(long now) 
-                    {
-                        
-                      if (actionPane.center.getX()< actionPane.getWidth()-50)
+                        //actionPane.ship.move();
+            }       
+                      if (event.getCode() == KeyCode.RIGHT)
                       {
                           actionPane.center.setDirection(0);
                      actionPane.center.move();
-                      
-                      }
-                      if (actionPane.center.getX()>= actionPane.getWidth()-50)
-                      {
-                          
-                          actionPane.center.setX(actionPane.getWidth() - 55);
-                         
-                          
-                      }
-                            
                     }
-                   
-        };
-        timer.start();
-    }
            
            if (event.getCode() == KeyCode.SPACE && actionPane.center.getProjectile().isVisible() ==  false)
             {
@@ -122,13 +77,13 @@ public class GamePane extends Application
                            previous = now;
                        }
                         
-                        if (now - previous < 2000000000L )
+                        if (now - previous < 20000000000L )
                         {
                           
                             
                            actionPane.center.fireProjectile();  
                            
-                           System.out.println(now+"\n"+previous);
+                           //System.out.println(now+"\n"+previous);
                         }
                        
                        if (actionPane.center.getProjectile().isVisible()  )
@@ -138,6 +93,7 @@ public class GamePane extends Application
                             previous = now;
                             }
                         }
+                        
                            
                              if (actionPane.center.getProjectile().getY()<actionPane.getLayoutY())
                             {
@@ -166,67 +122,8 @@ public class GamePane extends Application
             
         });
     
-    //KeyReleased
-    scene.setOnKeyReleased(new EventHandler <KeyEvent>()
-            {
-        @Override
-        public void handle(KeyEvent event) 
-        {
-            if (event.getCode() == KeyCode.LEFT)
-            {
-              
-                actionPane.center.setDirection(180);
-                 timer = new AnimationTimer() 
-                 {
-                     
-                    @Override
-                    public void handle(long now) 
-                    {
-                        //actionPane.ship.move();
-                          if (actionPane.center.getX()>actionPane.getLayoutX())
-                        {
-                            
-                        actionPane.center.setX(actionPane.center.getX()+5);
-                         
-                        }
-                        
-                         if (actionPane.center.getX()<= 0)
-                      {
-                          
-                        actionPane.center.setX(5);
-                        timer.start();
-                      }
-                         
-
-                    }
-                   
-        };
-        timer.start();
+    
         
-    }
-          
-           if (event.getCode() == KeyCode.RIGHT)
-            {
-                 timer = new AnimationTimer() 
-                 {
-                     
-                    @Override
-                    public void handle(long now) 
-                    {
-                        actionPane.center.setX(actionPane.center.getX()-5);
-                        
-                    }
-                    
-                   
-        };
-        timer.start();
-    }
-  
-        }
-            });
-        
-               
-       
     
     
     
@@ -246,8 +143,8 @@ public class GamePane extends Application
         this.actionPane.getChildren().add(object);
     }
 
-   
-    
+ 
+
 
     
 

@@ -18,5 +18,6 @@ public interface Movable
     int south = 270;
     
     
-    
+    public void move();
+     
 }

@@ -5,10 +5,14 @@
  */
 package majorprogram3;
 
+import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
+
 /**
  *
  * @author Chastin
  */
-public class ControlPane {
-    
+public class ControlPane extends Pane
+{
+    Label points = new Label("Points: ");
 }

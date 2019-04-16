@@ -54,11 +54,11 @@ public class CmdCenter extends GameObject
     setParentHeight(actionPane.getPrefHeight());
 
     //Give an initial location to the CmdCenter
-    this.setX(getParentWidth() +280);
-    this.setY(getParentHeight() + 400);
+    this.setX(getParentWidth() +300);
+    this.setY(getParentHeight() + 500);
     
     
-    this.speed = 5;
+    this.speed = 15;
     this.parentHeight = 10;
     this.parentWidth = 10;
     
@@ -69,9 +69,10 @@ public class CmdCenter extends GameObject
     public void move()
     {
         double newX = this.getX() + getSpeed() * Math.cos(Math.toRadians(getDirection()) );
-        double newY = this.getY() + getSpeed() * Math.sin(Math.toRadians(getDirection())) ;
-this.setX( newX );
-this.setY( newY );
+        if (!(newX < 0 || newX > 525))
+        {
+        this.setX( newX );
+        }
     }
     
     public Projectile getProjectile()
@@ -83,6 +84,7 @@ this.setY( newY );
     {
         if (!(this.getProjectile().isVisible()))
         { 
+            
             this.getProjectile().setVisible(true);
        this.getProjectile().setX(this.getX());
        this.getProjectile().setY(this.getY()+ 10);
