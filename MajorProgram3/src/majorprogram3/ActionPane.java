@@ -29,19 +29,17 @@ public class ActionPane extends Pane
     int randNum =  rand.nextInt(5)+1;
     public ActionPane()
     {
-       
+       this.getChildren().add(ship);
         this.setPrefSize(400,400);
-        this.setStyle("-fx-background-color: #000000");
-        //ship.startLaunchTimer();
-        getChildren().add(ship);
-        //shipTimer.start();
+        this.setStyle("-fx-background-color: black");
+        
        timer.scheduleAtFixedRate(new TimerTask()
        {
             @Override
             public void run() 
             {
                 int randNum =  rand.nextInt(5)+1;      
-                
+               
                 shipTimer.start();
             }
        },5000L,randNum * 5000L);
@@ -60,6 +58,7 @@ public class ActionPane extends Pane
        
       if (ship.isVisible() == false)
             {
+                 
                ship.setX(500);
                ship.setVisible(true);
             }
@@ -68,16 +67,11 @@ public class ActionPane extends Pane
            ship.move();
          }
      
-           if (ship.getY() == center.getProjectile().getY()+1) //To fix the margin of error
-           {
-              
-            ship.setVisible(false);
-            center.getProjectile().setVisible(false);
-            this.stop();
-           }
+         
            if (ship.getX() < -50)
            {
                ship.setVisible(false);
+               getChildren().remove(ship);
                this.stop();
            }
 

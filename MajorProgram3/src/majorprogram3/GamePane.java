@@ -27,24 +27,65 @@ import javafx.stage.Stage;
 public class GamePane extends Application 
 {
     ActionPane actionPane = new ActionPane();
- AnimationTimer timer;   
- 
- long lastShot = 0;
- int shotInterval = 500; 
- long previous = 0;
+    StatusPane statusPane = new StatusPane();
+    ControlPane controlPane = new ControlPane(this);
+ AnimationTimer timer = new AnimationTimer() {
+        @Override
+        public void handle(long now) 
+        {
+            
+        }
+    }; 
+ long previous = 0; //Used for projectile 
     public void start(Stage stage)
     {
-    StackPane stackPane = new StackPane();
-    stackPane.getChildren().add(actionPane);
+    BorderPane borderPane = new BorderPane();
+    //borderPane.setBottom(controlPane);
+    borderPane.setCenter(actionPane);
+    //borderPane.setTop(statusPane);
+    
+   
     KeyListener holder = null;
 
     
     
     
     
-    Scene scene = new Scene(stackPane,550,600);
-    scene.setOnKeyPressed(new EventHandler <KeyEvent>()
-            {
+    Scene scene = new Scene(borderPane,550,600);
+    scene.setOnKeyPressed(new GameHandler());
+            
+       
+    
+    
+        
+    
+    
+    
+    stage.setScene(scene);
+    stage.setTitle("Invaders");
+    stage.show();
+    
+    }
+   
+    public static void main(String[] args) 
+    {
+        launch(args);
+    }
+    
+    public void addGameObject(GameObject object)
+    {
+        this.actionPane.getChildren().add(object);
+    }
+    
+    public void restart(Stage stage)
+    {
+        
+        this.start(stage);
+    }
+
+  
+    public class GameHandler implements EventHandler<KeyEvent>
+    {
         @Override
         public void handle(KeyEvent event) 
         {
@@ -94,24 +135,32 @@ public class GamePane extends Application
                             }
                         }
                         
-                           
+                         if (actionPane.ship.getY() == actionPane.center.getProjectile().getY()+1 && actionPane.ship.getX() <= actionPane.center.getProjectile().getX()+20 && actionPane.ship.getX() >= actionPane.center.getProjectile().getX()-50) //To fix the margin of error
+                        {
+                                  if (actionPane.ship.isVisible() && actionPane.center.getProjectile().isVisible())
+                                  {
+                         actionPane.ship.setVisible(false);
+                         actionPane.center.getProjectile().setVisible(false);
+                         actionPane.getChildren().remove(actionPane.center.getProjectile());
+                        
+                         actionPane.ship.setX(500);
+                         statusPane.setPoints(actionPane.ship.getPoints());
+                         actionPane.shipTimer.stop();
+                          timer.stop();
+                                  }
+                        }    
+                       
                              if (actionPane.center.getProjectile().getY()<actionPane.getLayoutY())
                             {
                                 
                                 actionPane.center.getProjectile().setVisible(false); 
                                 actionPane.getChildren().remove(actionPane.center.getProjectile());
-                                
                                 timer.stop();
-                               
                                
                                 
                             }
                            
-                        }
-                       
-   
-                    
-                   
+                        }       
         };
 
             
@@ -119,31 +168,10 @@ public class GamePane extends Application
             } 
             timer.start();
         }
-            
-        });
-    
-    
-        
-    
-    
-    
-    stage.setScene(scene);
-    stage.setTitle("Invaders");
-    stage.show();
-    
-    }
-   
-    public static void main(String[] args) 
-    {
-        launch(args);
-    }
-    
-    public void addGameObject(GameObject object)
-    {
-        this.actionPane.getChildren().add(object);
-    }
+        }
+     
 
- 
+    
 
 
     

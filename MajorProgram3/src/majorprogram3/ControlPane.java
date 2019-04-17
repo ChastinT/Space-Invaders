@@ -5,8 +5,15 @@
  */
 package majorprogram3;
 
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 /**
  *
@@ -14,5 +21,16 @@ import javafx.scene.layout.Pane;
  */
 public class ControlPane extends Pane
 {
-    Label points = new Label("Points: ");
+    Button start = new Button("Start");
+    Button restart = new Button("Restart");
+    Button exit = new Button("Exit");
+    HBox bHolder = new HBox(start,restart,exit);
+   
+    
+    public ControlPane(GamePane gamePane)
+    {
+     
+        this.getChildren().add(bHolder);
+    }
+    
 }

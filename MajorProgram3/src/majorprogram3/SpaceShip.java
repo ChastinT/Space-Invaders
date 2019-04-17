@@ -23,12 +23,14 @@ public class SpaceShip extends Invader
     Timer launchTimer = new Timer();
     GamePane gamePane;
     Random rand;
-    int randNum;
+    int pointTimer;
+    private int points;
     public SpaceShip()
     {
-      
+   
+      points = 300;
         this.setVisible(false);
-        //this.setPointValue(randNum);
+        
          try 
     {           
     Image image = new Image( new FileInputStream("C:\\Users\\Chastin\\COMP167\\MajorProg3\\major-program-3-ChastinT\\img\\spritesheet.jpg"));
@@ -61,7 +63,7 @@ public class SpaceShip extends Invader
     this.setY(100);
     this.setSpeed(1);
     this.direction = 180;
-    
+    pointTimer++;
     
     }
     
@@ -71,25 +73,36 @@ public class SpaceShip extends Invader
          double newX = this.getX() + getSpeed() * Math.cos(Math.toRadians(getDirection()) );
          this.setX(newX);
     }
+
+    /**
+     * @return the points
+     */
+    public int getPoints() 
+    {
+        return points;
+    }
+
+    /**
+     * @param points the points to set
+     */
+    public void setPoints(int points) 
+    {
+        this.incPoints();
+        this.points = (points * pointTimer);
+       
+        
+    }
     
-      public void startLaunchTimer()
-      {
-          TimerTask launcher = new TimerTask()
-          {
-              @Override
-              public void run() 
-              {
-                Random rand = new Random();
-        int randNum = (rand.nextInt(5) + 1) * 5;
-      
-                       
+    public void incPoints() 
+    {
         
-              }
-              
-          };
-         launchTimer.scheduleAtFixedRate(launcher, System.currentTimeMillis()+1000L, System.currentTimeMillis() + (long)(randNum * 1000L));
-        
-      }
+        if (pointTimer == 6)
+        {
+            pointTimer = 0;
+        }
+        pointTimer++;
+    }
+    
 
 
 

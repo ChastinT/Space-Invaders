@@ -54,8 +54,8 @@ public class CmdCenter extends GameObject
     setParentHeight(actionPane.getPrefHeight());
 
     //Give an initial location to the CmdCenter
-    this.setX(getParentWidth() +300);
-    this.setY(getParentHeight() + 500);
+    this.setX(getParentWidth() +270);
+    this.setY(getParentHeight() + 450);
     
     
     this.speed = 15;
