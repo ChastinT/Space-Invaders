@@ -80,7 +80,10 @@ public class ActionPane extends Pane
         
   }
         
-  
+  public void restart()
+  {
+      
+  }
 }
   
    

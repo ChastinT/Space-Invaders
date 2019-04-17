@@ -13,9 +13,11 @@ import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -26,39 +28,59 @@ import javafx.stage.Stage;
  */
 public class GamePane extends Application 
 {
+    
     ActionPane actionPane = new ActionPane();
     StatusPane statusPane = new StatusPane();
-    ControlPane controlPane = new ControlPane(this);
- AnimationTimer timer = new AnimationTimer() {
+    ControlPane controlPane = new ControlPane();
+    BorderPane borderPane = new BorderPane();
+    GameHandler gameHandler = new GameHandler();
+ AnimationTimer timer = new AnimationTimer() 
+ {
         @Override
         public void handle(long now) 
         {
-            
+          
         }
     }; 
  long previous = 0; //Used for projectile 
     public void start(Stage stage)
     {
-    BorderPane borderPane = new BorderPane();
-    //borderPane.setBottom(controlPane);
-    borderPane.setCenter(actionPane);
-    //borderPane.setTop(statusPane);
-    
-   
-    KeyListener holder = null;
+        
+    TitlePane stackPane = new TitlePane();
+    stackPane.setPrefSize(300, 300);
 
-    
-    
-    
+    borderPane.setCenter(stackPane);
+    borderPane.setBottom(controlPane);
+   
     
     Scene scene = new Scene(borderPane,550,600);
-    scene.setOnKeyPressed(new GameHandler());
+    
+    
+    controlPane.start.setOnMousePressed(new EventHandler<MouseEvent>() //Setting controlPane Buttons
+    {
+        @Override
+        public void handle(MouseEvent event) 
+        {
             
-       
-    
-    
+            borderPane.setCenter(actionPane);
+            borderPane.setTop(statusPane);
+            scene.setOnKeyPressed(gameHandler);
+        }
         
-    
+    });
+    controlPane.restart.setOnMousePressed(new EventHandler<MouseEvent>()
+    {
+        @Override
+        public void handle(MouseEvent event) 
+        {
+            actionPane = new ActionPane();
+          statusPane = new StatusPane();
+          borderPane.setTop(statusPane);
+          borderPane.setCenter(actionPane);
+          scene.setOnKeyPressed(gameHandler);
+        }
+        
+    });
     
     
     stage.setScene(scene);
@@ -66,21 +88,13 @@ public class GamePane extends Application
     stage.show();
     
     }
+    
    
-    public static void main(String[] args) 
-    {
-        launch(args);
-    }
+  
     
     public void addGameObject(GameObject object)
     {
         this.actionPane.getChildren().add(object);
-    }
-    
-    public void restart(Stage stage)
-    {
-        
-        this.start(stage);
     }
 
   
@@ -103,7 +117,7 @@ public class GamePane extends Application
                      actionPane.center.move();
                     }
            
-           if (event.getCode() == KeyCode.SPACE && actionPane.center.getProjectile().isVisible() ==  false)
+           if (event.getCode() == KeyCode.Z && actionPane.center.getProjectile().isVisible() ==  false)
             {
                actionPane.getChildren().add(actionPane.center.getProjectile());
                   timer = new AnimationTimer() 
@@ -169,12 +183,30 @@ public class GamePane extends Application
             timer.start();
         }
         }
+    
+     public static void main(String[] args) 
+    {
+       launch(args);
+    }
      
 
     
 
+    
+     
 
     
-
     
+
 }
+    
+    
+
+
+    
+
+    
+
+    
+
+    
