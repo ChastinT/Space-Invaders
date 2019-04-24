@@ -46,15 +46,15 @@ public class GamePane extends Application
     public void start(Stage stage)
     {
         
-    TitlePane stackPane = new TitlePane();
-    stackPane.setPrefSize(300, 300);
+    TitlePane titlePane = new TitlePane();
+  
 
-    borderPane.setCenter(stackPane);
+    borderPane.setCenter(titlePane);
     borderPane.setBottom(controlPane);
    
     
-    Scene scene = new Scene(borderPane,550,600);
-    
+    Scene scene = new Scene(borderPane,550,800);
+     
     
     controlPane.start.setOnMousePressed(new EventHandler<MouseEvent>() //Setting controlPane Buttons
     {
@@ -132,13 +132,13 @@ public class GamePane extends Application
                            previous = now;
                        }
                         
-                        if (now - previous < 20000000000L )
+                        if (now - previous < 200000000000L )
                         {
                           
                             
                            actionPane.center.fireProjectile();  
                            
-                           //System.out.println(now+"\n"+previous);
+                          
                         }
                        
                        if (actionPane.center.getProjectile().isVisible()  )
@@ -148,23 +148,8 @@ public class GamePane extends Application
                             previous = now;
                             }
                         }
-                        
-                         if (actionPane.ship.getY() == actionPane.center.getProjectile().getY()+1 && actionPane.ship.getX() <= actionPane.center.getProjectile().getX()+20 && actionPane.ship.getX() >= actionPane.center.getProjectile().getX()-50) //To fix the margin of error
-                        {
-                                  if (actionPane.ship.isVisible() && actionPane.center.getProjectile().isVisible())
-                                  {
-                         actionPane.ship.setVisible(false);
-                         actionPane.center.getProjectile().setVisible(false);
-                         actionPane.getChildren().remove(actionPane.center.getProjectile());
-                        
-                         actionPane.ship.setX(500);
-                         statusPane.setPoints(actionPane.ship.getPoints());
-                         actionPane.shipTimer.stop();
-                          timer.stop();
-                                  }
-                        }    
                        
-                             if (actionPane.center.getProjectile().getY()<actionPane.getLayoutY())
+                          if (actionPane.center.getProjectile().getY()<actionPane.getLayoutY())
                             {
                                 
                                 actionPane.center.getProjectile().setVisible(false); 
@@ -173,6 +158,61 @@ public class GamePane extends Application
                                
                                 
                             }
+                        //Adding points after collision 
+                         if (actionPane.ship.getY() == actionPane.center.getProjectile().getY()+1 && actionPane.ship.getX() <= actionPane.center.getProjectile().getX()+20 && actionPane.ship.getX() >= actionPane.center.getProjectile().getX()-50) //To fix the margin of error
+                        {
+                                  if (actionPane.ship.isVisible() && actionPane.center.getProjectile().isVisible())
+                                  { 
+                         statusPane.setPoints(actionPane.ship.getPoints());
+                          timer.stop();
+                                  }
+                        }  
+                         
+                         
+                         
+                       
+                            
+                             
+                         if (actionPane.ship.getX() < 0)
+                         {
+                             actionPane.ship.setVisible(false);
+                             actionPane.getChildren().remove(actionPane.ship);
+                             actionPane.shipAnimate.stop();
+                             timer.stop();
+                         }
+                         
+                         
+            for (int i = 0 ; i < actionPane.hord.aliens.length;i++) //Aliens
+            {
+                for (int j = 0; j < actionPane.hord.aliens[i].length;j++)
+                {
+                    if (actionPane.hord.getAlien(i, j).getY() >= actionPane.center.getProjectile().getY() && actionPane.hord.getAlien(i, j).getX() >= actionPane.center.getProjectile().getX()-30 && actionPane.hord.getAlien(i, j).getX() <= actionPane.center.getProjectile().getX()+25  )
+                    {
+                        actionPane.hord.getAlien(i, j).setVisible(false);
+                        actionPane.center.getProjectile().setVisible(false);
+                        actionPane.getChildren().remove(actionPane.center.getProjectile());
+                         actionPane.getChildren().remove(actionPane.hord.getAlien(i, j));
+                         statusPane.setPoints(actionPane.hord.getAlien(i, j).getPointValue());
+                         timer.stop();
+                    }
+                }
+            }
+                          
+         for (int i = 0 ; i < actionPane.hord.aliens.length;i++) //Aliens hitting center
+            {
+                for (int j = 0; j < actionPane.hord.aliens[i].length;j++)
+                {
+                    if (actionPane.hord.getAlien(i, j).getY() == actionPane.center.getY())
+                    {
+                        actionPane.hord.getAlien(i, j).setVisible(false);
+                        actionPane.center.getProjectile().setVisible(false);
+                        actionPane.getChildren().remove(actionPane.center.getProjectile());
+                         actionPane.getChildren().remove(actionPane.hord.getAlien(i, j));
+                         statusPane.setPoints(actionPane.hord.getAlien(i, j).getPointValue());
+                         timer.stop();
+                    }
+                }
+            }
                            
                         }       
         };
@@ -183,6 +223,8 @@ public class GamePane extends Application
             timer.start();
         }
         }
+
+        
     
      public static void main(String[] args) 
     {

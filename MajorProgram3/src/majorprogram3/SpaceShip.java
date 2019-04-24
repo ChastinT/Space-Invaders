@@ -60,10 +60,10 @@ public class SpaceShip extends Invader
 
     //Give an initial location to the CmdCenter
     this.setX(500);
-    this.setY(100);
+    this.setY(50);
     this.setSpeed(1);
     this.direction = 180;
-    pointTimer++;
+    
     
     }
     
@@ -72,6 +72,7 @@ public class SpaceShip extends Invader
         
          double newX = this.getX() + getSpeed() * Math.cos(Math.toRadians(getDirection()) );
          this.setX(newX);
+         
     }
 
     /**

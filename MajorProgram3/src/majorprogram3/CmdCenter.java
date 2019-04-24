@@ -55,7 +55,7 @@ public class CmdCenter extends GameObject
 
     //Give an initial location to the CmdCenter
     this.setX(getParentWidth() +270);
-    this.setY(getParentHeight() + 450);
+    this.setY(getParentHeight() + 650);
     
     
     this.speed = 15;
